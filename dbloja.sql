@@ -57,3 +57,8 @@ select * from tbUsuarios;
 update tbUsuarios set senha = '789658452' where codusu = 1;
 
 select * from tbUsuarios;
+
+-- excluindo os registros das tabelas
+delete from tbUsuarios where codusu=2;
+
+select * from tbUsuarios;
