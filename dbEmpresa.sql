@@ -87,6 +87,12 @@ insert into tbFornecedores(nome,cnpj,inscrEst,email,telefone)
 
 insert into tbProdutos(descricao,quantidade,valor,codForn)
 	values('Banana',12,10.35,1);
+insert into tbProdutos(descricao,quantidade,valor,codForn)
+	values('Maca',20,5.00,1);
+insert into tbProdutos(descricao,quantidade,valor,codForn)
+	values('Pera',50,15.25,1);
+insert into tbProdutos(descricao,quantidade,valor,codForn)
+	values('Morango',35,10.25,1);
 
 insert into tbClientes(nome,email,cpf,telefone) 
 	values('Paulo Albuquerque da Vila','paulo.avila@hotmail.com',
@@ -94,6 +100,16 @@ insert into tbClientes(nome,email,cpf,telefone)
 
 insert into tbVendas(codProd,codCli,codusu,dataVenda,horaVenda,quantidade)
 	values(1,1,1,'2022/11/17','15:42:02',10);
+insert into tbVendas(codProd,codCli,codusu,dataVenda,horaVenda,quantidade)
+	values(3,1,1,'2022/11/18','15:42:02',5);
+insert into tbVendas(codProd,codCli,codusu,dataVenda,horaVenda,quantidade)
+	values(2,1,1,'2022/11/17','15:42:02',3);
+insert into tbVendas(codProd,codCli,codusu,dataVenda,horaVenda,quantidade)
+	values(4,1,1,'2022/11/17','15:42:02',8);
+insert into tbVendas(codProd,codCli,codusu,dataVenda,horaVenda,quantidade)
+	values(2,1,1,'2022/11/17','15:42:02',7);
+insert into tbVendas(codProd,codCli,codusu,dataVenda,horaVenda,quantidade)
+	values(3,1,1,'2022/11/17','15:42:02',2);
 
 select * from tbFuncionarios;
 select * from tbUsuarios;
@@ -101,3 +117,43 @@ select * from tbFornecedores;
 select * from tbProdutos;
 select * from tbClientes;
 select * from tbVendas;
+
+-- utilizando inner join nas pesquisas
+
+select prod.descricao, vend.quantidade 
+from tbVendas as vend
+inner join tbProdutos as prod
+on vend.codProd = prod.codProd;
+
+
+select prod.descricao,forn.nome from tbProdutos as prod
+inner join tbFornecedores as forn
+on prod.codForn = forn.codForn;
+
+select prod.descricao, cli.nome, usu.nome from tbVendas as vend
+inner join tbProdutos as prod on vend.codProd = prod.codProd
+inner join tbClientes as cli on vend.codCli = cli.codCli
+inner join tbUsuarios as usu on vend.codusu = usu.codusu;
+
+
+select prod.descricao as 'Nome do Produto',
+cli.nome as 'Nome do Cliente', forn.nome as 'Nome do Fornecedor' 
+from tbVendas as vend
+inner join tbProdutos as prod on vend.codProd = prod.codProd 
+inner join tbClientes as cli on cli.codCli = vend.codCli
+inner join tbFornecedores as forn on prod.codForn = forn.codForn
+where vend.codProd = 3;
+
+-- Qual o nome do funcionário que
+-- vendeu o produto morango e quantidade da venda e qual
+--  é o fornecedor desse produto.
+-- Pergunta realizada para tabela de vendas
+
+select func.nome, prod.descricao, vend.quantidade, forn.nome 
+from tbVendas as vend 
+inner join tbUsuarios as usu on vend.codusu = usu.codusu
+inner join tbFuncionarios as func on usu.codfunc = func.codfunc
+inner join tbProdutos as prod on vend.codProd = prod.codProd
+inner join tbFornecedores as forn on prod.codForn = forn.codForn
+where vend.codProd = 4;
+
